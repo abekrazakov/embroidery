@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ayla Olive</title>
+  <meta name="description" content="Bespoke, heritage-inspired embroidery on everyday canvas goods. Totes, florals and monograms stitched to order in deep jewel-toned thread.">
+  <meta name="theme-color" content="#21140f">
+
+  <!-- Fonts
+       IM Fell English   → display headings (old botanical-plate type)
+       Libre Caslon Text → body copy + the "Tailored Serif" lettering style
+       Jost              → small caps labels + the "Modern Block" lettering style
+       Allura            → the "Modern Script" lettering style -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Allura&family=IM+Fell+English:ital@0;1&family=Jost:wght@400;500&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap">
+
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- =====================================================================
+       SVG SPRITE
+       Embroidery motifs drawn once and reused by the hero hoop and the
+       gallery plates. Kept off-screen (not display:none) so its patterns
+       and gradients still render wherever they are referenced.
+       ===================================================================== -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- Natural linen weave (hoop fabric, swatches, canvas totes) -->
+      <pattern id="weave" width="4" height="4" patternUnits="userSpaceOnUse">
+        <rect width="4" height="4" fill="#e8dcc3"/>
+        <path d="M0 .5h4M.5 0v4" stroke="#d7c8a9" stroke-width=".6"/>
+      </pattern>
+
+      <!-- Satin-stitch fills: tight parallel stripes that read as thread -->
+      <pattern id="satin-leaf" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(65)">
+        <rect width="4" height="4" fill="#2f4d36"/>
+        <rect width="4" height="1.5" fill="#4d7150"/>
+      </pattern>
+      <pattern id="satin-rose" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+        <rect width="4" height="4" fill="#6f1e2d"/>
+        <rect width="4" height="1.5" fill="#953245"/>
+      </pattern>
+
+      <!-- Metals: brass hoop + steel needle -->
+      <linearGradient id="brass" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#e2c68a"/>
+        <stop offset=".45" stop-color="#a98546"/>
+        <stop offset=".7" stop-color="#d6b777"/>
+        <stop offset="1" stop-color="#7a5d2c"/>
+      </linearGradient>
+      <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f2efe9"/>
+        <stop offset="1" stop-color="#8d8a85"/>
+      </linearGradient>
+
+      <!-- Single motifs -->
+      <g id="leaf">
+        <path d="M0 0C9-11 29-13 42 0C29 13 9 11 0 0Z" fill="url(#satin-leaf)"/>
+        <path d="M3 0H38" stroke="#22382a" stroke-width="1"/>
+      </g>
+      <g id="rose">
+        <circle r="15" fill="url(#satin-rose)"/>
+        <path d="M-1 0a2.5 2.5 0 1 1 4 1a6 6 0 1 1-10-3a9.5 9.5 0 1 1 17 4a13 13 0 1 1-23-1" fill="none" stroke="#c4646f" stroke-width="1.6" stroke-linecap="round"/>
+      </g>
+      <!-- Lazy-daisy flower: petal colour follows the `color` set where it's used -->
+      <g id="daisy">
+        <g fill="none" stroke="currentColor" stroke-width="1.8">
+          <ellipse cy="-8.5" rx="3.4" ry="7"/>
+          <ellipse cy="-8.5" rx="3.4" ry="7" transform="rotate(72)"/>
+          <ellipse cy="-8.5" rx="3.4" ry="7" transform="rotate(144)"/>
+          <ellipse cy="-8.5" rx="3.4" ry="7" transform="rotate(216)"/>
+          <ellipse cy="-8.5" rx="3.4" ry="7" transform="rotate(288)"/>
+        </g>
+        <circle r="3" fill="#c4a05a"/>
+      </g>
+
+      <!-- Dark heritage floral print (Garden Print Tote) -->
+      <pattern id="floral-print" width="64" height="64" patternUnits="userSpaceOnUse" patternTransform="scale(.8)">
+        <rect width="64" height="64" fill="#2a1912"/>
+        <use href="#leaf" transform="translate(16 20) rotate(-30) scale(.42)"/>
+        <use href="#leaf" transform="translate(16 20) rotate(200) scale(.38)"/>
+        <use href="#rose" transform="translate(16 20) scale(.55)"/>
+        <use href="#leaf" transform="translate(48 52) rotate(-150) scale(.38)"/>
+        <use href="#daisy" transform="translate(48 52) scale(.6)" color="#d9b9cf"/>
+        <circle cx="44" cy="14" r="1.6" fill="#c4a05a"/>
+        <circle cx="6" cy="48" r="1.6" fill="#c4a05a"/>
+      </pattern>
+
+      <!-- Tote silhouette shared by both tote plates (fill set where used) -->
+      <path id="tote-body" d="M72 132H228L238 330Q238 338 230 338H70Q62 338 62 330Z"/>
+    </defs>
+
+    <!-- The full botanical spray, drawn in a 400×400 box -->
+    <symbol id="sprig" viewBox="0 0 400 400">
+      <!-- back-stitched stems -->
+      <g fill="none" stroke="#3a5a3f" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="7 3">
+        <path d="M200 318C196 270 214 220 200 170S196 112 206 92"/>
+        <path d="M204 245C186 238 160 236 138 228"/>
+        <path d="M205 207C224 196 246 188 268 176"/>
+        <path d="M196 132C180 126 166 120 156 106"/>
+        <path d="M200 282C218 280 236 284 254 296"/>
+      </g>
+      <!-- satin-stitched leaves -->
+      <use href="#leaf" transform="translate(199 302) rotate(-150)"/>
+      <use href="#leaf" transform="translate(200 298) rotate(-28)"/>
+      <use href="#leaf" transform="translate(204 246) rotate(-42) scale(.9)"/>
+      <use href="#leaf" transform="translate(205 208) rotate(-140) scale(.9)"/>
+      <use href="#leaf" transform="translate(198 152) rotate(-35) scale(.8)"/>
+      <use href="#leaf" transform="translate(172 236) rotate(100) scale(.7)"/>
+      <use href="#leaf" transform="translate(240 189) rotate(-95) scale(.7)"/>
+      <use href="#leaf" transform="translate(228 283) rotate(78) scale(.65)"/>
+      <!-- woven roses and lazy-daisy flowers -->
+      <use href="#rose" transform="translate(206 88) scale(1.3)"/>
+      <use href="#rose" transform="translate(136 227)"/>
+      <use href="#daisy" transform="translate(271 174)" color="#5e2f57"/>
+      <use href="#daisy" transform="translate(154 104) scale(.85)" color="#5e2f57"/>
+      <use href="#daisy" transform="translate(257 299) scale(.8)" color="#5e2f57"/>
+      <!-- french knots -->
+      <g fill="#b9944c">
+        <circle cx="230" cy="106" r="2.6"/><circle cx="238" cy="120" r="2.2"/>
+        <circle cx="180" cy="74" r="2.4"/><circle cx="118" cy="210" r="2.4"/>
+        <circle cx="114" cy="240" r="2.2"/><circle cx="292" cy="166" r="2.4"/>
+        <circle cx="288" cy="188" r="2.2"/><circle cx="136" cy="92" r="2.2"/>
+        <circle cx="278" cy="310" r="2.2"/><circle cx="236" cy="314" r="2.4"/>
+      </g>
+      <g fill="#7a2232">
+        <circle cx="224" cy="70" r="2.2"/><circle cx="160" cy="250" r="2.2"/><circle cx="252" cy="160" r="2"/>
+      </g>
+    </symbol>
+  </svg>
+
+  <!-- =====================================================================
+       HEADER
+       ===================================================================== -->
+  <header class="site-header">
+    <div class="wrap site-header__inner">
+      <a class="wordmark" href="#top">Ayla <em>Olive</em></a>
+      <nav aria-label="Primary">
+        <ul class="nav">
+          <li><a href="#aesthetic">Aesthetic</a></li>
+          <li><a href="#collection">Collection</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a class="nav__cta" href="#inquire">Inquire</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ===================================================================
+         1. HERO
+         =================================================================== -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="wrap hero__inner">
+        <div class="hero__copy">
+          <p class="eyebrow">Heritage embroidery · Made to order</p>
+          <h1 class="hero__title" id="hero-title">Ayla <em>Olive</em></h1>
+          <p class="hero__lede">Bespoke, heritage-inspired embroidery on the canvas goods you carry every day. Every tote, floral and monogram is stitched to order in deep, jewel-toned thread.</p>
+          <div class="hero__actions">
+            <a class="btn btn--gold" href="#inquire">Commission a piece</a>
+            <a class="btn btn--ghost" href="#collection">See the collection</a>
+          </div>
+        </div>
+
+        <!-- Hero artwork: an embroidery hoop. Swap for a photograph by
+             replacing the <svg> with <img src="images/hero.jpg" alt="…"> -->
+        <figure class="hero__art">
+          <svg class="hoop" viewBox="0 0 400 420" role="img" aria-label="A brass embroidery hoop holding garnet roses and a forest-green botanical sprig, with a threaded needle">
+            <defs>
+              <clipPath id="hoop-fabric"><circle cx="200" cy="220" r="170"/></clipPath>
+              <radialGradient id="fabric-shade" cx="50%" cy="45%" r="55%">
+                <stop offset=".72" stop-color="#3b2416" stop-opacity="0"/>
+                <stop offset="1" stop-color="#3b2416" stop-opacity=".4"/>
+              </radialGradient>
+            </defs>
+            <!-- fabric + embroidery -->
+            <circle cx="200" cy="220" r="170" fill="url(#weave)"/>
+            <g clip-path="url(#hoop-fabric)">
+              <use href="#sprig" x="0" y="26" width="400" height="400"/>
+            </g>
+            <circle cx="200" cy="220" r="170" fill="url(#fabric-shade)"/>
+            <!-- inner and outer hoop rings -->
+            <circle cx="200" cy="220" r="173" fill="none" stroke="#6e5530" stroke-width="5"/>
+            <circle cx="200" cy="220" r="182" fill="none" stroke="url(#brass)" stroke-width="13"/>
+            <circle cx="200" cy="220" r="188.5" fill="none" stroke="#4d3a1d" stroke-width="1" opacity=".7"/>
+            <!-- tension clasp -->
+            <rect x="187" y="22" width="11" height="24" rx="2" fill="url(#brass)"/>
+            <rect x="202" y="22" width="11" height="24" rx="2" fill="url(#brass)"/>
+            <rect x="174" y="29" width="62" height="6" rx="3" fill="#8f6f37"/>
+            <circle cx="240" cy="32" r="8" fill="url(#brass)" stroke="#5c4524"/>
+            <!-- garnet thread running out to a needle -->
+            <path d="M262 324C285 352 300 374 322 370S340 360 346 366" fill="none" stroke="#7a2232" stroke-width="1.6" stroke-linecap="round"/>
+            <g transform="translate(346 366) rotate(40)">
+              <path d="M0-1.7L58-1L65 0L58 1L0 1.7Q-3 0 0-1.7Z" fill="url(#steel)"/>
+              <ellipse cx="5" rx="3.2" ry=".7" fill="#21140f"/>
+            </g>
+          </svg>
+          <figcaption class="plate-caption"><span>Fig. 1</span> Garnet roses and a forest sprig in satin and back stitch</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         2. ABOUT / AESTHETIC
+         =================================================================== -->
+    <section class="band band--bordeaux" id="aesthetic" aria-labelledby="aesthetic-title">
+      <div class="wrap about">
+        <div class="about__copy">
+          <p class="eyebrow">The aesthetic</p>
+          <h2 class="section-title" id="aesthetic-title">Dark florals, <em>heirloom thread</em></h2>
+          <p class="about__lede">Our pieces take their cues from pressed-flower albums, faded seed catalogs and the velvet-lined sewing boxes of another century. Each one begins on undyed cotton canvas and is finished in the colors of an old botanical plate, with garnet and plum blooms, forest-green leaves and a single line of antique gold. The result is quiet and a little moody, made to be carried every day and kept for years.</p>
+        </div>
+
+        <!-- Thread card: the brand palette as embroidery floss.
+             Edit names / shade numbers to match the floss you stitch with. -->
+        <div class="thread-card-wrap">
+          <aside class="thread-card" aria-labelledby="thread-card-title">
+            <p class="thread-card__title" id="thread-card-title">The thread card</p>
+            <ul class="thread-card__list">
+              <li><span class="skein" style="--thread: #6b1d2a"></span><span class="thread-card__name">Garnet</span><span class="thread-card__no">814</span></li>
+              <li><span class="skein" style="--thread: #3a2216"></span><span class="thread-card__name">Cocoa</span><span class="thread-card__no">938</span></li>
+              <li><span class="skein" style="--thread: #1f3b2a"></span><span class="thread-card__name">Forest</span><span class="thread-card__no">890</span></li>
+              <li><span class="skein" style="--thread: #5a2a4e"></span><span class="thread-card__name">Plum</span><span class="thread-card__no">3834</span></li>
+              <li><span class="skein" style="--thread: #b08a3e"></span><span class="thread-card__name">Antique Gold</span><span class="thread-card__no">680</span></li>
+              <li><span class="skein" style="--thread: #ece0c8"></span><span class="thread-card__name">Ecru</span><span class="thread-card__no">Ecru</span></li>
+            </ul>
+            <p class="thread-card__foot">Shade numbers follow standard six-strand cotton floss.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         3. SHOWCASE GALLERY
+         Each .plate is an image placeholder. To use a photograph, replace
+         the <svg> inside it with <img src="images/…jpg" alt="…">; the CSS
+         crops any image to the 4:5 frame.
+         =================================================================== -->
+    <section class="band band--cocoa" id="collection" aria-labelledby="collection-title">
+      <div class="wrap">
+        <header class="section-head section-head--split">
+          <div>
+            <p class="eyebrow">The first collection</p>
+            <h2 class="section-title" id="collection-title">Everyday goods, <em>stitched to keep</em></h2>
+          </div>
+          <p class="section-intro">Three pieces to begin with, each made to order and finished with your name, your initials or a botanical motif.</p>
+        </header>
+
+        <ul class="gallery">
+          <!-- Piece 1: canvas tote -->
+          <li class="piece">
+            <div class="plate plate--bordeaux">
+              <svg viewBox="0 0 300 375" role="img" aria-label="Natural canvas tote embroidered with the monogram E R W in garnet thread">
+                <ellipse cx="150" cy="346" rx="100" ry="10" fill="#000" opacity=".35"/>
+                <path d="M104 134C104 52 196 52 196 134" fill="none" stroke="#cdbd9c" stroke-width="11"/>
+                <path d="M96 134C96 40 204 40 204 134" fill="none" stroke="#e8dcc3" stroke-width="12"/>
+                <use href="#tote-body" fill="url(#weave)"/>
+                <path d="M74 146H226" stroke="#b9a684" stroke-width="1.2" stroke-dasharray="4 3"/>
+                <!-- box-x stitching where the handles meet the bag -->
+                <g fill="none" stroke="#b9a684" stroke-width="1.1">
+                  <path d="M90 132h12v12h-12zM90 132l12 12M102 132l-12 12"/>
+                  <path d="M198 132h12v12h-12zM198 132l12 12M210 132l-12 12"/>
+                </g>
+                <text x="150" y="252" text-anchor="middle" class="svg-serif" font-size="30" letter-spacing="9" fill="#6f1e2d">E·R·W</text>
+                <use href="#leaf" transform="translate(118 272) rotate(-170) scale(.5)"/>
+                <use href="#leaf" transform="translate(182 272) rotate(-10) scale(.5)"/>
+                <circle cx="150" cy="272" r="2.6" fill="#b9944c"/>
+              </svg>
+            </div>
+            <div class="piece__meta">
+              <p class="piece__kicker">Natural cotton canvas</p>
+              <h3 class="piece__title">The Everyday Tote</h3>
+              <p class="piece__text">A sturdy, undyed canvas tote with long shoulder handles and box-stitched seams. Add a monogram, a name or a single botanical sprig.</p>
+              <p class="piece__styles">Modern Script · Modern Block · Tailored Serif</p>
+            </div>
+          </li>
+
+          <!-- Piece 2: floral print tote -->
+          <li class="piece">
+            <div class="plate plate--linen">
+              <svg viewBox="0 0 300 375" role="img" aria-label="Tote bag in a dark vintage floral print with a cream label stitched with Iris in script">
+                <ellipse cx="150" cy="346" rx="100" ry="10" fill="#3b2416" opacity=".3"/>
+                <path d="M104 134C104 52 196 52 196 134" fill="none" stroke="#1c110c" stroke-width="11"/>
+                <path d="M96 134C96 40 204 40 204 134" fill="none" stroke="#3a2216" stroke-width="12"/>
+                <use href="#tote-body" fill="url(#floral-print)"/>
+                <path d="M74 146H226" stroke="#c4a05a" stroke-width="1" stroke-dasharray="4 3" opacity=".7"/>
+                <!-- cream canvas label for lettering -->
+                <rect x="104" y="268" width="92" height="40" fill="url(#weave)"/>
+                <rect x="108" y="272" width="84" height="32" fill="none" stroke="#7a2232" stroke-width=".8" stroke-dasharray="3 2"/>
+                <text x="150" y="298" text-anchor="middle" class="svg-script" font-size="30" fill="#6f1e2d">Iris</text>
+              </svg>
+            </div>
+            <div class="piece__meta">
+              <p class="piece__kicker">Vintage floral print</p>
+              <h3 class="piece__title">The Garden Print Tote</h3>
+              <p class="piece__text">Our everyday shape in a dark heritage floral of garnet roses and pale daisies, finished with a cream canvas label ready for lettering.</p>
+              <p class="piece__styles">Modern Script · Modern Block · Tailored Serif</p>
+            </div>
+          </li>
+
+          <!-- Piece 3: custom script detail -->
+          <li class="piece">
+            <div class="plate plate--forest">
+              <svg viewBox="0 0 300 375" role="img" aria-label="Close-up of a canvas swatch embroidered with the name Juniper in garnet script">
+                <g transform="rotate(-5 150 188)">
+                  <rect x="38" y="92" width="224" height="190" fill="#000" opacity=".3" transform="translate(6 10)"/>
+                  <rect x="38" y="92" width="224" height="190" fill="url(#weave)"/>
+                  <rect x="48" y="102" width="204" height="170" fill="none" stroke="#b9a684" stroke-width="1" stroke-dasharray="4 3"/>
+                  <text x="150" y="200" text-anchor="middle" class="svg-script stitched" font-size="62" fill="#6f1e2d">Juniper</text>
+                  <path d="M92 222C120 214 180 214 208 222" fill="none" stroke="#b9944c" stroke-width="1.6" stroke-dasharray="5 3" stroke-linecap="round"/>
+                  <use href="#rose" transform="translate(150 140) scale(.6)"/>
+                  <use href="#leaf" transform="translate(141 140) rotate(190) scale(.45)"/>
+                  <use href="#leaf" transform="translate(159 140) rotate(-10) scale(.45)"/>
+                </g>
+                <path d="M226 262C244 290 252 300 270 304" fill="none" stroke="#6f1e2d" stroke-width="1.4"/>
+                <g transform="translate(270 304) rotate(28)">
+                  <path d="M0-1.5L44-.9L50 0L44 .9L0 1.5Q-3 0 0-1.5Z" fill="url(#steel)"/>
+                </g>
+              </svg>
+            </div>
+            <div class="piece__meta">
+              <p class="piece__kicker">Custom script details</p>
+              <h3 class="piece__title">The Script Detail</h3>
+              <p class="piece__text">A name, a date or a single word, stitched in garnet, plum, forest or antique gold. Available on every piece in the collection.</p>
+              <p class="piece__styles">Shown in Modern Script</p>
+            </div>
+          </li>
+        </ul>
+
+        <!-- Lettering styles + custom options -->
+        <div class="lettering">
+          <div class="lettering__head">
+            <h3 class="subhead">Three lettering styles</h3>
+            <p class="section-intro">Every piece can carry a name, a word or a monogram. Choose a lettering style, then pick the thread color and placement.</p>
+          </div>
+
+          <ul class="specimens">
+            <li class="specimen">
+              <p class="specimen__sample font-script">Juniper</p>
+              <h4 class="specimen__name">Modern Script</h4>
+              <p class="specimen__note">Flowing, joined letters. Best for first names and single words.</p>
+            </li>
+            <li class="specimen">
+              <p class="specimen__sample font-block">Juniper</p>
+              <h4 class="specimen__name">Modern Block</h4>
+              <p class="specimen__note">Clean, even capitals. Best for short words and bold statements.</p>
+            </li>
+            <li class="specimen">
+              <p class="specimen__sample font-serif">Juniper</p>
+              <h4 class="specimen__name">Tailored Serif</h4>
+              <p class="specimen__note">Classic letterforms with fine serifs. Best for monograms and dates.</p>
+            </li>
+          </ul>
+
+          <dl class="options">
+            <div><dt>Thread</dt><dd>Any of the six shades on our thread card</dd></div>
+            <div><dt>Placement</dt><dd>Front center, lower corner or handle</dd></div>
+            <div><dt>Length</dt><dd>Up to 12 letters, or 3 initials</dd></div>
+            <div><dt>Motif</dt><dd>Add a woven rose or botanical sprig</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         4. HOW CUSTOM ORDERS WORK
+         =================================================================== -->
+    <section class="band band--forest" id="process" aria-labelledby="process-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">Made to order</p>
+          <h2 class="section-title" id="process-title">How custom orders work</h2>
+          <p class="section-intro">Every piece is made for one person, and nothing is stitched until you have approved the design.</p>
+        </header>
+
+        <ol class="steps">
+          <li class="step">
+            <span class="step__num" aria-hidden="true">I</span>
+            <div class="step__body">
+              <p class="step__meta">By form or email</p>
+              <h3 class="step__title">Send an inquiry</h3>
+              <p>Use the form below to tell us which piece you would like, the words or initials, and the thread colors you love.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step__num" aria-hidden="true">II</span>
+            <div class="step__body">
+              <p class="step__meta">Proof and quote</p>
+              <h3 class="step__title">Approve your proof</h3>
+              <p>We reply with a stitch proof showing your lettering, colors and placement, along with a quote. Ask for changes until it is right.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step__num" aria-hidden="true">III</span>
+            <div class="step__body">
+              <p class="step__meta">2–3 weeks</p>
+              <h3 class="step__title">Stitched and sent</h3>
+              <p>Once you approve, we embroider your piece to order, wrap it by hand and ship it to you.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         5. CUSTOM INQUIRY FORM
+         To receive submissions, set data-endpoint on the <form> to a form
+         service URL (e.g. Formspree, Basin or Getform). Until then the form
+         shows a preview confirmation and sends nothing. See js/main.js.
+         =================================================================== -->
+    <section class="band band--plum" id="inquire" aria-labelledby="inquire-title">
+      <div class="wrap inquire">
+        <div class="inquire__intro">
+          <p class="eyebrow">Custom inquiry</p>
+          <h2 class="section-title" id="inquire-title">Commission <em>a piece</em></h2>
+          <p>A name for a bridesmaid, initials for a weekend bag, one word in garnet thread. Tell us what you have in mind and we will reply with a proof and a quote.</p>
+          <dl class="contact-list">
+            <div><dt>Email</dt><dd><a href="mailto:hello@aylaolive.com">hello@aylaolive.com</a></dd></div>
+            <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/" target="_blank" rel="noopener">@aylaolive</a></dd></div>
+          </dl>
+        </div>
+
+        <div class="inquire__panel">
+          <form class="inquiry-form" id="inquiry-form" method="post" data-endpoint="">
+            <div class="field-row">
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" autocomplete="name" required placeholder="Your full name">
+              </div>
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="item">Desired item / style</label>
+              <select id="item" name="item" required>
+                <option value="" disabled selected>Choose a piece</option>
+                <option>The Everyday Tote</option>
+                <option>The Garden Print Tote</option>
+                <option>A script detail</option>
+                <option>Something else (tell us below)</option>
+              </select>
+            </div>
+
+            <fieldset class="field">
+              <legend>Lettering style</legend>
+              <div class="style-picker">
+                <input type="radio" id="style-script" name="lettering" value="Modern Script" checked>
+                <label class="style-option" for="style-script"><span class="style-option__glyph font-script">Aa</span>Modern Script</label>
+                <input type="radio" id="style-block" name="lettering" value="Modern Block">
+                <label class="style-option" for="style-block"><span class="style-option__glyph font-block">Aa</span>Modern Block</label>
+                <input type="radio" id="style-serif" name="lettering" value="Tailored Serif">
+                <label class="style-option" for="style-serif"><span class="style-option__glyph font-serif">Aa</span>Tailored Serif</label>
+              </div>
+            </fieldset>
+
+            <fieldset class="field">
+              <legend>Thread color</legend>
+              <div class="thread-picker">
+                <input type="radio" id="thread-garnet" name="thread" value="Garnet" data-color="#6f1e2d" checked>
+                <label for="thread-garnet" style="--thread: #6b1d2a" title="Garnet"><span class="visually-hidden">Garnet</span></label>
+                <input type="radio" id="thread-cocoa" name="thread" value="Cocoa" data-color="#3a2216">
+                <label for="thread-cocoa" style="--thread: #3a2216" title="Cocoa"><span class="visually-hidden">Cocoa</span></label>
+                <input type="radio" id="thread-forest" name="thread" value="Forest" data-color="#1f3b2a">
+                <label for="thread-forest" style="--thread: #1f3b2a" title="Forest"><span class="visually-hidden">Forest</span></label>
+                <input type="radio" id="thread-plum" name="thread" value="Plum" data-color="#5a2a4e">
+                <label for="thread-plum" style="--thread: #5a2a4e" title="Plum"><span class="visually-hidden">Plum</span></label>
+                <input type="radio" id="thread-gold" name="thread" value="Antique Gold" data-color="#9c7934">
+                <label for="thread-gold" style="--thread: #b08a3e" title="Antique Gold"><span class="visually-hidden">Antique Gold</span></label>
+                <input type="radio" id="thread-ecru" name="thread" value="Ecru" data-color="#cbbb98">
+                <label for="thread-ecru" style="--thread: #ece0c8" title="Ecru"><span class="visually-hidden">Ecru</span></label>
+              </div>
+            </fieldset>
+
+            <div class="field">
+              <label for="custom-text">Custom text / monogram</label>
+              <input id="custom-text" name="custom_text" type="text" maxlength="24" placeholder="e.g. Juniper, or E R W">
+            </div>
+
+            <!-- Live preview of the custom text (updated by js/main.js) -->
+            <div class="stitch-preview" aria-hidden="true">
+              <span class="stitch-preview__label">Preview</span>
+              <p class="stitch-preview__text font-script" id="preview-text">Juniper</p>
+            </div>
+
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="5" placeholder="Placement, the occasion, a date you need it by…"></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn--gold" type="submit">Send inquiry</button>
+              <p class="form-note">We reply by email with a proof and a quote.</p>
+            </div>
+            <p class="form-error" id="form-error" role="alert" hidden></p>
+          </form>
+
+          <!-- Shown after a successful submission -->
+          <div class="inquiry-thanks" id="inquiry-thanks" tabindex="-1" hidden>
+            <p class="eyebrow">Inquiry received</p>
+            <h3 class="inquiry-thanks__title" id="thanks-title">Thank you.</h3>
+            <p id="thanks-message">We will reply by email with a proof and a quote.</p>
+            <button class="btn btn--ghost" type="button" id="inquiry-again">Send another inquiry</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================================
+       6. FOOTER
+       Replace the social URLs with your own profiles.
+       ===================================================================== -->
+  <footer class="site-footer">
+    <div class="wrap site-footer__inner">
+      <div class="site-footer__brand">
+        <a class="wordmark" href="#top">Ayla <em>Olive</em></a>
+        <p>Heritage embroidery, made to order.</p>
+      </div>
+      <ul class="socials" aria-label="Social links">
+        <li><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.pinterest.com/" target="_blank" rel="noopener">Pinterest</a></li>
+        <li><a href="https://www.tiktok.com/" target="_blank" rel="noopener">TikTok</a></li>
+        <li><a href="mailto:hello@aylaolive.com">Email</a></li>
+      </ul>
+      <p class="site-footer__legal">© <span id="year">2026</span> Ayla Olive. All pieces made to order.</p>
+    </div>
+  </footer>
+</body>
+</html>
