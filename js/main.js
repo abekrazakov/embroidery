@@ -39,8 +39,10 @@
   updatePreview();
 
   /* ---------- 2. Inquiry submission ----------
-     Set data-endpoint on the <form> to your form service's URL, e.g.
-       <form id="inquiry-form" data-endpoint="https://formspree.io/f/abcdwxyz">
+     Set data-endpoint on the <form> to the Google Apps Script web app URL
+     (see docs/form-setup.md), e.g.
+       <form id="inquiry-form" data-endpoint="https://script.google.com/macros/s/…/exec">
+     Any service that accepts a standard form post (such as Formspree) also works.
      Without an endpoint the form runs in preview mode: it shows the
      confirmation panel but sends nothing. */
   const thanks = document.getElementById('inquiry-thanks');
@@ -81,12 +83,17 @@
     submitButton.textContent = 'Sending…';
 
     try {
+      // Sent as a standard URL-encoded form post, which Apps Script reads
+      // directly and which needs no cross-site preflight request.
       const response = await fetch(endpoint, {
         method: 'POST',
-        body: new FormData(form),
+        body: new URLSearchParams(new FormData(form)),
         headers: { Accept: 'application/json' }
       });
       if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
+
+      const result = await response.json().catch(() => ({}));
+      if (result.result === 'error') throw new Error(result.error || 'Submission rejected');
       showThanks(firstName, false);
     } catch (error) {
       errorBox.textContent = 'Your inquiry could not be sent. Check your connection and try again, or email us at hello@aylaolive.com.';

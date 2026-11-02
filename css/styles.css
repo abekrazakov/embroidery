@@ -1137,6 +1137,15 @@ a { color: inherit; }
 .stitch-preview__text.font-block,
 .stitch-preview__text.font-serif { font-size: clamp(1.5rem, 3.5vw, 2.1rem); }
 
+/* Spam-trap field, moved off-screen rather than hidden so bots still see it */
+.form-trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .form-actions {
   display: flex;
   flex-wrap: wrap;

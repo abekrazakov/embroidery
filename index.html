@@ -496,6 +496,12 @@
               <textarea id="message" name="message" rows="5" placeholder="Placement, the occasion, a date you need it by…"></textarea>
             </div>
 
+            <!-- Spam trap: hidden from people, filled in by bots; the sheet script ignores any post that fills it -->
+            <div class="form-trap" aria-hidden="true">
+              <label for="website">Website</label>
+              <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+
             <div class="form-actions">
               <button class="btn btn--gold" type="submit">Send inquiry</button>
               <p class="form-note">We reply by email with a proof and a quote.</p>
