@@ -1,5 +1,5 @@
 /* =========================================================================
-   Ayla Olive · small enhancements
+   Bek Collective Embroidery Studio · small enhancements
    1. Live lettering preview in the inquiry form
    2. Inquiry submission (form service or preview mode)
    3. Footer year
@@ -96,7 +96,7 @@
       if (result.result === 'error') throw new Error(result.error || 'Submission rejected');
       showThanks(firstName, false);
     } catch (error) {
-      errorBox.textContent = 'Your inquiry could not be sent. Check your connection and try again, or email us at hello@aylaolive.com.';
+      errorBox.textContent = 'Your inquiry could not be sent. Check your connection and try again, or email us at hello@bekcollective.com.';
       errorBox.hidden = false;
     } finally {
       submitButton.disabled = false;

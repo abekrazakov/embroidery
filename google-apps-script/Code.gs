@@ -1,5 +1,5 @@
 /* =========================================================================
-   Ayla Olive · inquiry form → Google Sheet
+   BC Embroidery Studio · inquiry form → Google Sheet
    -------------------------------------------------------------------------
    Receives submissions from the website's inquiry form, saves each one as
    a row in the "Inquiries" tab and (optionally) emails you an alert.

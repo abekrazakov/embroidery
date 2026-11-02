@@ -8,7 +8,7 @@ about 10 minutes and you only do it once.
 
 1. Signed in to the Google account that should own the inquiries, go to
    <https://sheets.new> to create a blank spreadsheet.
-2. Name it, for example **Ayla Olive · Inquiries**.
+2. Name it, for example **BC Embroidery Studio · Inquiries**.
 
 ## 2. Add the script
 
@@ -18,7 +18,7 @@ about 10 minutes and you only do it once.
    from this repository.
 4. To get an email for each new inquiry, put your address in the
    `NOTIFY_EMAIL` line near the top, e.g.
-   `const NOTIFY_EMAIL = 'hello@aylaolive.com';`
+   `const NOTIFY_EMAIL = 'hello@bekcollective.com';`
 5. Click **Save** (the disk icon).
 
 ## 3. Run the one-time setup

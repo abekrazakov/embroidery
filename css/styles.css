@@ -1,5 +1,5 @@
 /* =========================================================================
-   Ayla Olive · heritage embroidery showcase
+   Bek Collective Embroidery Studio · heritage embroidery showcase
    -------------------------------------------------------------------------
     1. Design tokens
     2. Base & reset
@@ -59,7 +59,7 @@
   --step-1:  1.25rem;
   --step-2:  clamp(1.5rem, 1.25rem + 1vw, 1.875rem);
   --step-3:  clamp(2.25rem, 1.6rem + 2.8vw, 3.5rem);
-  --step-4:  clamp(3.75rem, 2rem + 7.5vw, 7.75rem);
+  --step-4:  clamp(3.25rem, 1.6rem + 6.4vw, 6.75rem);
 
   /* Space */
   --gutter:      clamp(16px, 5vw, 72px);
@@ -379,6 +379,9 @@ a { color: inherit; }
 @media (max-width: 760px) {
   .nav li:not(:last-child) { display: none; }
 }
+@media (max-width: 420px) {
+  .site-header .wordmark { font-size: 1.3rem; }
+}
 
 
 /* -------------------------------------------------------------------------
@@ -425,11 +428,34 @@ a { color: inherit; }
   line-height: .88;
   letter-spacing: -.01em;
 }
-/* "Olive" drops to a second line and steps in, like a printed title page */
+/* "Collective" drops to a second line and steps in, like a printed title page */
 .hero__title em {
   display: block;
-  padding-left: .9em;
+  padding-left: .6em;
   color: var(--gold);
+}
+
+/* "Embroidery Studio" set small and tracked beneath, like an imprint line */
+.hero__title-sub {
+  display: flex;
+  align-items: center;
+  gap: .9em;
+  margin-top: 1.1rem;
+  padding-left: .15em;
+  font-family: var(--font-label);
+  font-size: clamp(.8rem, .7rem + .4vw, 1rem);
+  font-weight: 500;
+  letter-spacing: .42em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+}
+.hero__title-sub::after {
+  content: "";
+  flex: 1 1 auto;
+  max-width: 6rem;
+  height: 2px;
+  background: var(--stitch-x);
 }
 
 .hero__lede {
